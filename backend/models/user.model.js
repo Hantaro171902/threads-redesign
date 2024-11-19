@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    usename: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -18,12 +18,12 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     followers: {
-      typeL: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.ObjectId, //  Corrected typeL to type
       ref: "User",
       default: [],
     },
     following: {
-      typeL: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.ObjectId, // Corrected typeL to type
       ref: "User",
       default: [],
     },
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
   },
-  { timestamps: true }
+  { timestamps: true } // ex: member since created by Admin
 );
 
 const User = mongoose.model("User", userSchema);
