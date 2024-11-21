@@ -32,12 +32,12 @@ export const createPost = async (req, res) => {
       img,
     });
 
-    const maxLength = 500;
-    if (text.length > maxLength) {
-      return res
-        .status(400)
-        .json({ error: `Text must be less than ${maxLength}` });
-    }
+    // const maxLength = 500;
+    // if (text.length > maxLength) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: `Text must be less than ${maxLength}` });
+    // }
 
     await newPost.save();
     res.status(201).json(newPost);
