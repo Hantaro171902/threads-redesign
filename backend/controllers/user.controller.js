@@ -112,8 +112,8 @@ export const updateUser = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ messaga: "User not found" });
+    let user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     if (
       (!newPassword && currentPassword) ||
@@ -170,5 +170,11 @@ export const updateUser = async (req, res) => {
     user = await user.save();
 
     // password should be null in response
-  } catch (error) {}
+    user.password = null;
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log("Error in updateUser", error.message);
+    res.status(500).json({ error: error.message });
+  }
 };
