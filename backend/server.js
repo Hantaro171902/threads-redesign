@@ -24,7 +24,8 @@ const PORT = process.env.PORT || 8000;
 
 // console.log(process.env.MONGO_URI);
 
-app.use(express.json()); //  tab parse req.body
+app.use(express.json({limit:"5mb"})); //  tab parse req.body
+// linit shouldn't be too high to prevent DOS
 app.use(express.urlencoded({ extended: true })); // to parse form data (urlencoded)
 
 app.use(cookieParser());
