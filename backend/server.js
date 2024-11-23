@@ -31,7 +31,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
-app.use("/api/post", postRoute);
+app.use("/api/posts", postRoute);
 app.use("/api/notifications", notificationRoute);
 
 app.listen(PORT, () => {
