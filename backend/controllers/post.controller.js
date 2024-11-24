@@ -148,7 +148,12 @@ export const likeUnlikePost = async (req, res) => {
         }
       );
 
-      res.status(200).json({ message: "Post unliked successfully" });
+      const updatedLikes = post.likes.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+      res.status(200).json(updatedLikes);
+
+      // res.status(200).json({ message: "Post unliked successfully" });
     } else {
       // Like Post
       post.likes.push(userId);
@@ -165,7 +170,9 @@ export const likeUnlikePost = async (req, res) => {
       await notification.save();
 
       // TODO return the id of the post as a response
-      res.status(200).json({ message: "Post liked successfully" });
+      const updatedLikes = post.likes;
+      res.status(200).json(updatedLikes);
+      // res.status(200).json({ message: "Post liked successfully" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
