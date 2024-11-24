@@ -21,7 +21,7 @@ const useUpdateUserProfile = () => {
           }
           return data;
         } catch (error) {
-          throw new Error(error.messag);
+          throw new Error(error.message);
         }
       },
       onSuccess: () => {

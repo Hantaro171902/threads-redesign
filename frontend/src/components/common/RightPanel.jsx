@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
 // import { USERS_FOR_RIGHT_PANEL } from "../../utils/db/dummy";
-import useFollow from "../hooks/useFollow";
+import useFollow from "../../hooks/useFollow";
 
 const RightPanel = () => {
   // const isLoading = false;
