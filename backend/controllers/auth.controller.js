@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, email, password } = req.body;
+    const { fullName, username, email, gender, chooseType, reed, password } = req.body;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -36,6 +36,9 @@ export const signup = async (req, res) => {
       fullName,
       username,
       email,
+      gender, // expects "male" or "female"
+      chooseType, // cat or dog
+      reed,
       password: hashedPassword,
     });
 
@@ -48,6 +51,9 @@ export const signup = async (req, res) => {
         fullName: newUser.fullName,
         username: newUser.username,
         email: newUser.email,
+        gender: newUser.gender,
+        chooseType: newUser.chooseType,
+        reed: newUser.reed,
         followers: newUser.followers,
         following: newUser.following,
         profileImg: newUser.profileImg,
@@ -85,8 +91,11 @@ export const login = async (req, res) => {
       fullName: user.fullName,
       username: user.username,
       email: user.email,
+      gender: newUser.gender,
+      chooseType: newUser.chooseType,
+      reed: newUser.reed,
       followers: user.followers,
-      following: user.folloginowing,
+      following: user.following,
       profileImg: user.profileImg,
       coverImg: user.coverImg,
     });

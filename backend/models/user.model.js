@@ -17,6 +17,20 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: true,
+    },
+    chooseType: {
+      //  This is for choosing type cat or dog and more
+      type: [String],
+      default: [], // default to an empty array
+    },
+    reed: {
+      type: [String],
+      default: [],
+    },
     followers: [
       {
         type: mongoose.Schema.ObjectId, //  Corrected typeL to type
@@ -54,6 +68,10 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
+    isFozen: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true } // ex: member since created by Admin
 );
