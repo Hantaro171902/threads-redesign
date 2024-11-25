@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 // models
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
 import Notification from "../models/notification.model.js";
 
 export const getUserProfile = async (req, res) => {
@@ -169,6 +170,18 @@ export const updateUser = async (req, res) => {
 
     user = await user.save();
 
+    // Find all posts this user replied and update username and userProfilePic fields
+    await Post.updateMany(
+      { "replies.userId": userId },
+      {
+        $set: {
+          "replies.$[reply].username": user.username,
+          "replies.$[reply].userProfilePic": user.profileImg,
+        },
+      },
+      { arrayFilters: [{ "reply.userId": userId }] }
+    );
+
     // password should be null in response
     user.password = null;
 
@@ -176,5 +189,21 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     console.log("Error in updateUser", error.message);
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const freezeAccount = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    user.isFrozen = true;
+    await user.save();
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.messaga });
   }
 };

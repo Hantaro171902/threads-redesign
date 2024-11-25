@@ -2,13 +2,15 @@ import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema(
   {
-    user: {
+    postedBY: {
+      // postedBy
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     text: {
       type: String,
+      maxLength: 500,
     },
     img: {
       type: String,
@@ -17,18 +19,25 @@ const postSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        default: [],
       },
     ],
     comments: [
       {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
         text: {
           type: String,
           required: true,
         },
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
+        userProfilePic: {
+          type: String,
+        },
+        username: {
+          type: String,
         },
       },
     ],

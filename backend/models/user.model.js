@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
-    isFozen: {
+    isFrozen: {
       type: Boolean,
       default: false,
     },
