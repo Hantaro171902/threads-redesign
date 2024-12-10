@@ -1,14 +1,20 @@
-import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
+import generateTokenAndSetCookie from "../lib/utils/generateToken.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, email, gender, chooseType, reed, password } = req.body;
+    const { name, username, email, gender, chooseType, reed, password } =
+      req.body;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email format" });
+    }
+
+    const user = await User.findOne({ $or: [{ email }, { username }] });
+    if (user) {
+      return res.status(400).json({ error: "User already exists" });
     }
 
     const existingUser = await User.findOne({ username });
@@ -33,7 +39,7 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
-      fullName,
+      name,
       username,
       email,
       gender, // expects "male" or "female"
@@ -48,7 +54,7 @@ export const signup = async (req, res) => {
 
       res.status(201).json({
         _id: newUser._id,
-        fullName: newUser.fullName,
+        name: newUser.name,
         username: newUser.username,
         email: newUser.email,
         gender: newUser.gender,
@@ -88,7 +94,7 @@ export const login = async (req, res) => {
 
     res.status(200).json({
       _id: user._id,
-      fullName: user.fullName,
+      name: user.name,
       username: user.username,
       email: user.email,
       gender: newUser.gender,
@@ -108,10 +114,10 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 0 });
-    res.status(200).json({ message: "Logged out successfully" });
+    res.cookie("jwt", "", { maxAge: 1 });
+    res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
-    console.log("Error in logout controller", error.message);
+    console.log("Error in logout user", error.message);
 
     res.status(500).json({ error: "Internal Server Error" });
   }

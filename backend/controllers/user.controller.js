@@ -1,22 +1,36 @@
 import bcrypt from "bcryptjs";
 import { v2 as cloudinary } from "cloudinary";
-
 // models
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import Notification from "../models/notification.model.js";
 
 export const getUserProfile = async (req, res) => {
-  const { username } = req.params;
+  // We will fetch user profile either with username or userId
+  // query is either username or userId
+  const { query } = req.params;
 
   try {
-    const user = await User.findOne({ username }).select("-password");
-    if (!user) return res.status(404).json({ message: "User not found" });
+    let user;
+
+    // query is userId
+    if (mongoose.Types.ObjectId.isValid(query)) {
+      user = await User.findOne({ _id: query })
+        .select("-password")
+        .select("-updatedAt");
+    } else {
+      // query is username
+      user = await User.findOne({ username: query })
+        .select("-password")
+        .select("-updatedAt");
+    }
+
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     res.status(200).json(user);
   } catch (err) {
+    res.status(500).json({ error: err.message });
     console.log("Error in getUserProfile: ", err.message);
-    res.status(500).json({ error: err.messagae });
   }
 };
 

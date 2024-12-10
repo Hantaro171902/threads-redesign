@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     username: {
       type: String,
       required: true,
@@ -22,12 +26,13 @@ const userSchema = new mongoose.Schema(
       enum: ["male", "female"],
       required: true,
     },
-    chooseType: {
+    type: {
+      //  This is for choosing type cat or dog and more
       //  This is for choosing type cat or dog and more
       type: [String],
       default: [], // default to an empty array
     },
-    reed: {
+    breed: {
       type: [String],
       default: [],
     },
@@ -61,13 +66,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    likedPosts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
-        default: [],
-      },
-    ],
+    // likedPosts: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Post",
+    //     default: [],
+    //   },
+    // ],
     isFrozen: {
       type: Boolean,
       default: false,
